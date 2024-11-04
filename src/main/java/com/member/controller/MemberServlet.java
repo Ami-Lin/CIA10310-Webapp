@@ -100,7 +100,10 @@ public class MemberServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 				successView.forward(req, res);
 		}
+	
 		
+		
+//------------------------------- 更新 --------------------------------------
 		
 		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
 			
@@ -111,6 +114,7 @@ public class MemberServlet extends HttpServlet {
 		
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 Integer memid = Integer.valueOf(req.getParameter("memid").trim());
+
 				
 // 帳號
 String ac = req.getParameter("ac");
@@ -120,6 +124,7 @@ String ac = req.getParameter("ac");
 				} else if(!ac.trim().matches(acReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.add("會員帳號: 只能是英數字和_ , 且長度必需在6到20之間");
 	            }
+			
 				
 // 密碼
 				String pw = req.getParameter("pw");
@@ -129,6 +134,7 @@ String ac = req.getParameter("ac");
 				} else if(!pw.trim().matches(pwReg)) { //以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("會員密碼: 只能是英數字和_ , 且長度必需在6到20之間");
 				}
+		
 				
 // 電子郵件
 String email = req.getParameter("email");
@@ -137,7 +143,7 @@ String email = req.getParameter("email");
 Integer status = Integer.valueOf(req.getParameter("status").trim());
 
 // 註冊日期
-		java.sql.Date registertime = null;
+		java.sql.Date registertime = null; //去抓資料庫
 		try {
 registertime = java.sql.Date.valueOf(req.getParameter("registertime").trim());
 		} catch (IllegalArgumentException e) {
@@ -170,9 +176,9 @@ String phone = req.getParameter("phone");
 				String phoneReg = "^09[0-9][0-9]-\\d{6}$"; //電話號碼
 				if (phone == null || phone.trim().length() == 0) {
 					errorMsgs.add("手機號碼: 請勿空白");
-				} else if(!phone.trim().matches(phoneReg)) { //以下練習正則(規)表示式(regular-expression)
-					errorMsgs.add("手機號碼: 格式錯誤");
-				}
+				} //else if(!phone.trim().matches(phoneReg)) { //以下練習正則(規)表示式(regular-expression)
+					//errorMsgs.add("手機號碼: 格式錯誤");
+				//}
 // 市
 String city = req.getParameter("city").trim();
 				if (city == null || city.trim().length() == 0) {
@@ -198,8 +204,9 @@ byte[] img = new byte[req.getContentLength()];
 				memberVO.setMemid(memid);
 				memberVO.setAc(ac);
 				memberVO.setPw(pw);
+				memberVO.setStatus(0);
 				memberVO.setEmail(email);
-				memberVO.setRegistertime(registertime);
+				memberVO.setRegistertime(null); //記得回抓資料庫
 				memberVO.setName(name);
 				memberVO.setBirth(birth);
 				memberVO.setSex(sex);
@@ -220,7 +227,7 @@ req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的empVO物�
 				
 				/***************************2.開始修改資料*****************************************/
 				MemberService memberSvc = new MemberService();
-				memberVO = memberSvc.updateMember(memid,ac, pw, email, registertime, name, birth, sex, phone,
+				memberVO = memberSvc.updateMember(memid,ac, pw, status, email, registertime, name, birth, sex, phone,
 						city, disc, address, img);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
@@ -229,6 +236,7 @@ req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的empVO物�
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 		}
+		
 
         if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
 			
@@ -260,17 +268,21 @@ String pw = req.getParameter("pw");
 String email = req.getParameter("email");
 
 // 會員狀態
-Integer status = Integer.valueOf(req.getParameter("status").trim());
 
-// 註冊日期
+Integer status = 0;
+//Integer.valueOf(req.getParameter("status").trim());
+System.out.println(status);
+// 註冊日期 (add有問題)
 					java.sql.Date registertime = null;
-					try {
-registertime = java.sql.Date.valueOf(req.getParameter("registertime").trim());
+					try {				
+registertime = java.sql.Date.valueOf(req.getParameter("registertime"));
+
+//registertime = java.sql.Date.valueOf(req.getParameter("registertime").trim());
 					} catch (IllegalArgumentException e) {
 						registertime=new java.sql.Date(System.currentTimeMillis());
 						errorMsgs.add("應該不會出錯吧ㄏㄏ");
 					}
-
+System.out.println("123"+registertime);
 // 姓名
 String name = req.getParameter("name");
 							String nameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
@@ -296,9 +308,9 @@ String phone = req.getParameter("phone");
 							String phoneReg = "^09[0-9][0-9]-\\d{6}$"; //電話號碼
 							if (phone == null || phone.trim().length() == 0) {
 								errorMsgs.add("手機號碼: 請勿空白");
-							} else if(!phone.trim().matches(phoneReg)) { //以下練習正則(規)表示式(regular-expression)
-								errorMsgs.add("手機號碼: 格式錯誤");
-							}
+							} //else if(!phone.trim().matches(phoneReg)) { //以下練習正則(規)表示式(regular-expression)
+							//	errorMsgs.add("手機號碼: 格式錯誤");
+							//}
 // 市
 String city = req.getParameter("city").trim();
 							if (city == null || city.trim().length() == 0) {
@@ -325,6 +337,7 @@ byte[] img = new byte[req.getContentLength()];
 							memberVO.setAc(ac);
 							memberVO.setPw(pw);
 							memberVO.setEmail(email);
+							memberVO.setStatus(status);
 							memberVO.setRegistertime(registertime);
 							memberVO.setName(name);
 							memberVO.setBirth(birth);
@@ -346,8 +359,9 @@ req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的empVO物�
 				
 				/***************************2.開始新增資料***************************************/
 				MemberService memberSvc = new MemberService();
-				memberVO = memberSvc.addMember(ac, pw, email, registertime, name, birth, 
-						sex, phone,city, disc, address,img);
+				memberVO = memberSvc.addMember(ac, pw, status, email, registertime,
+						 name, birth,  sex, phone,
+						 city, disc, address, img);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/back-end/member/listAllMember.jsp";

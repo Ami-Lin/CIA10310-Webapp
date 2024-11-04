@@ -9,7 +9,7 @@ public class MemberService {
 		dao = new MemberJDBCDAO();
 	}
 
-	public MemberVO addMember(String ac, String pw,String email,java.sql.Date registertime,
+	public MemberVO addMember(String ac, String pw,Integer status,String email,java.sql.Date registertime,
 			String name, java.sql.Date birth, String sex,String phone,
 			String city,String disc,String address,byte[] img) {
 
@@ -19,6 +19,7 @@ public class MemberService {
 		memberVO.setAc(ac);
 		memberVO.setPw(pw);
 		memberVO.setEmail(email);
+		memberVO.setStatus(status);
 		memberVO.setRegistertime(registertime);
 		memberVO.setName(name);
 		memberVO.setBirth(birth);
@@ -33,7 +34,7 @@ public class MemberService {
 		return memberVO;
 	}
 
-	public MemberVO updateMember(Integer memid,String ac, String pw,String email,java.sql.Date registertime,
+	public MemberVO updateMember(Integer memid,String ac, String pw,Integer status,String email,java.sql.Date registertime,
 			String name, java.sql.Date birth, String sex,String phone,
 			String city,String disc,String address,byte[] img) {
 
@@ -42,6 +43,7 @@ public class MemberService {
 		memberVO.setMemid(memid);
 		memberVO.setAc(ac);
 		memberVO.setPw(pw);
+		memberVO.setStatus(status);
 		memberVO.setEmail(email);
 		memberVO.setRegistertime(registertime);
 		memberVO.setName(name);

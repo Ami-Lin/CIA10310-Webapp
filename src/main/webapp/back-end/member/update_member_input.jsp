@@ -70,7 +70,7 @@
 
 	<tr>
 		<td>會員編號:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemid()%></td>
+		<td><input type="TEXT" name="memid" value="<%=memberVO.getMemid()%>" size="45"></td>
 	</tr>
 	<tr>
 		<td>會員帳號:</td>
@@ -83,6 +83,14 @@
 	<tr>
 		<td>電子郵件:</td>
 		<td><input type="EMAIL" name="email" value="<%=memberVO.getEmail()%>" size="45"/></td>
+	</tr>
+	<tr>
+		<td>會員狀態:</td>
+		<td><input type="TEXT" name="status" value="<%=memberVO.getStatus()%>" size="45"/></td>
+	</tr>
+	<tr>
+		<td>註冊時間:</td>
+		<td><input name="registertime" id="f_date1" type="date" value="<%= memberVO.getRegistertime()%>" size="45"></td>
 	</tr>
 	<tr>
 		<td>姓名:</td>

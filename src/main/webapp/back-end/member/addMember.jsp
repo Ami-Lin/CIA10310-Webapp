@@ -3,9 +3,9 @@
 <%@ page import="com.member.model.*"%>
 
 <% //見com.emp.controller.EmpServlet.java第238行存入req的empVO物件 (此為輸入格式有錯誤時的empVO物件)
-MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 %>
---<%= memberVO==null %>--$memberVO.disc}--<!-- line 100測爽的 -->
+--<%= memberVO==null %>--${memberVO.city}--<!-- line 100測爽的 -->
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -81,13 +81,24 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<td><input type="EMAIL" name="email" value="<%= (memberVO==null)? "he01314906@gmail.com" : memberVO.getEmail()%>" size="45"/></td>
 	</tr>
 	<tr>
+		<td>會員狀態:</td>
+		<td><input type="text" name="status" value="<%= (memberVO==null)? "0" : memberVO.getStatus()%>" size="45" disabled/></td>
+	</tr>
+	<tr>
+		<td>註冊時間:</td>
+		<td><input name="registertime" id="f_date1" type="date" size="45" value="2024-11-03" disabled /></td>
+	</tr>
+<%-- 	value="<%= memberVO.getRegistertime()%>" --%>
+	<tr>
 		<td>姓名:</td>
 		<td><input type="TEXT" name="name" value="<%= (memberVO==null)? "陳柏諭" : memberVO.getName()%>" size="45"/></td>
 	</tr>
+	
 	<tr>
 		<td>生日:</td>
-		<td><input name="birth" id="f_date1" type="date" value="<%= memberVO.getBirth()%>" size="45"></td>
+		<td><input name="birth" id="f_date1" type="date" size="45" value="1999-02-23" /></td>
 	</tr>
+<%-- 	 value="<%= memberVO.getBirth()%>"  --%>
 	<tr>
 		<td>性別:</td>
 		<td><input name="sex" type="text" value="<%= (memberVO==null)? "男" : "女" %>" size="45"></td>

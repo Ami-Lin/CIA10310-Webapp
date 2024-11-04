@@ -23,7 +23,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>MemberServlet</servlet-name>
-    <url-pattern>/member/member.do</url-pattern>
+    <url-pattern>/back-end/member/member.do</url-pattern>
   </servlet-mapping>
   
 </web-app>
